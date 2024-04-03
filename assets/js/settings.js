@@ -7,6 +7,15 @@ const settings = {
     audioContext: new window.AudioContext(),
     audioElement: false,
     audioSource: false,
+    analyser: false,
+    bufferLength: false,
+    dataArray: false,
+
+    resolution: 1024,
+    padding:3,
+    distress: 15,
+    numIterations:300,
+    visibility:.1
 }
 
 export default settings;
