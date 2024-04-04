@@ -1,72 +1,32 @@
-// Load the MP3 file
+// Load the audio file
 const audioFile = '/music/Black_Shadows.mp3';
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
-// Create an audio element and source node
-const audioElement = new Audio(audioFile);
-const audioSource = audioContext.createMediaElementSource(audioElement);
+// Fetch the audio file
+fetch(audioFile)
+  .then(response => response.arrayBuffer())
+  .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
+  .then(audioBuffer => {
+    // Get the audio data and read the spectrum at a given timestamp
+    function readSpectrum(timestamp) {
+      // Calculate the sample index based on the timestamp
+      const sampleRate = audioBuffer.sampleRate;
+      const sampleIndex = Math.floor(sampleRate * timestamp);
+      console.log(sampleRate);
 
-// Analyser node to get audio data
-const analyser = audioContext.createAnalyser();
-analyser.fftSize = 2048; // Adjust the FFT size for resolution
+      // Get the audio data for the given timestamp
+      const channelData = audioBuffer.getChannelData(0); // Assuming mono audio
+      const spectrumData = channelData.slice(sampleIndex, sampleIndex + 2048); // Adjust the slice length as needed
 
-// Connect the audio source to the analyser
-audioSource.connect(analyser);
-audioSource.connect(audioContext.destination);
+      // Process the spectrum data
+      // You can access the spectrum values in the 'spectrumData' array
+      console.log(channelData);
+    }
 
-// Canvas setup
-const canvas = document.getElementById('spectrum-canvas');
-const canvasContext = canvas.getContext('2d');
-const canvasWidth = canvas.width;
-const canvasHeight = canvas.height;
-const bufferLength = analyser.frequencyBinCount;
-const dataArray = new Uint8Array(bufferLength);
-
-// Draw function to visualize the spectrum
-function draw() {
-  // Request animation frame for smooth rendering
-  requestAnimationFrame(draw);
-
-  // Get the audio data and draw the spectrum
-  analyser.getByteFrequencyData(dataArray);
-
-  // Clear the canvas for new frames
-  canvasContext.clearRect(0, 0, canvasWidth, canvasHeight);
-
-  // Calculate the width of each bar in the spectrum
-  const barWidth = canvasWidth / bufferLength;
-  let x = 0;
-
-  // Iterate through the data array and draw the bars
-  for (let i = 0; i < bufferLength; i++) {
-    const barHeight = dataArray[i] * (canvasHeight / 255);
-
-    // Set the bar color based on its height
-    const r = barHeight + 25;
-    const g = 250 - barHeight;
-    const b = 50;
-
-    // Draw the bar
-    canvasContext.fillStyle = `rgb(${r}, ${g}, ${b})`;
-    canvasContext.fillRect(x, canvasHeight - barHeight, barWidth, barHeight);
-
-    // Move to the next position
-    x += barWidth + 1;
-  }
-}
-
-// Function to start playing the audio and draw the spectrum
-function startPlayback() {
-  // Check if the audio is already playing
-  if (audioElement.paused) {
-    // Start playing the audio
-    audioElement.play();
-
-    // Draw the spectrum
-    draw();
-  }
-}
-
-// Add an event listener to start playback on button click
-const playButton = document.getElementById('playButton');
-playButton.addEventListener('click', startPlayback);
+    // Call the readSpectrum function with the desired timestamp
+    const timestampInSeconds = 10; // Example timestamp in seconds
+    readSpectrum(timestampInSeconds);
+  })
+  .catch(error => {
+    console.error('Error loading audio file:', error);
+  });

@@ -11,7 +11,7 @@ const settings = {
     bufferLength: false,
     dataArray: false,
 
-    resolution: 1024,
+    resolution: 32,
     padding:3,
     distress: 15,
     numIterations:300,

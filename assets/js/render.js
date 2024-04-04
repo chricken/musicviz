@@ -6,8 +6,9 @@ const render = {
         let c = elements.c;
         let ctx = elements.ctx;
         // Draw function to visualize the spectrum
+
         // Request animation frame for smooth rendering
-        requestAnimationFrame(render.spectrum);
+        // requestAnimationFrame(render.spectrum);
 
         // Get the audio data and draw the spectrum
         settings.analyser.getByteFrequencyData(settings.dataArray);
@@ -32,12 +33,12 @@ const render = {
             );
         }
     },
-    lines() {
+    lines(resumeHere) {
         let c = elements.c;
         let ctx = elements.ctx;
         // Draw function to visualize the spectrum
         // Request animation frame for smooth rendering
-        requestAnimationFrame(render.lines);
+        requestAnimationFrame(resumeHere);
 
         // Get the audio data and draw the spectrum
         settings.analyser.getByteFrequencyData(settings.dataArray);

@@ -14,7 +14,8 @@ function startPlayback() {
         settings.audioElement.play();
 
         // Draw the spectrum
-        render.lines();
+        render.lines(startPlayback);
+        settings.audioElement.pause();
     }
 }
 
@@ -31,16 +32,19 @@ const init = () => {
     settings.audioSource.connect(settings.analyser);
     settings.audioSource.connect(settings.audioContext.destination);
 
-
+    // settings.audioElement.currentTime = timestampInSeconds;
     // Canvas setup
     elements.c = document.querySelector('#spectrum');
     elements.ctx = elements.c.getContext('2d');
+
     settings.bufferLength = settings.analyser.frequencyBinCount;
     settings.dataArray = new Uint8Array(settings.bufferLength);
+
+    render.lines();
 }
 
 // Add an event listener to start playback on button click
-const playButton = document.querySelector('#playButton');
-playButton.addEventListener('click', startPlayback);
+ const playButton = document.querySelector('#playButton');
+ playButton.addEventListener('click', startPlayback);
 
 init();
