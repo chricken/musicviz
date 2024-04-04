@@ -4,17 +4,11 @@ const settings = {
     elements: {},
     // Load the MP3 file
     pathAudio: '/music/Black_Shadows.mp3',
-    audioContext: new window.AudioContext(),
-    audioElement: false,
-    audioSource: false,
-    analyser: false,
-    bufferLength: false,
-    dataArray: false,
-
-    resolution: 32,
+    timestamp:100,
+    everyNthValue: 20,   // Divisor, der aussagt, wie genau das Spektrum sein soll
     padding:3,
-    distress: 15,
-    numIterations:300,
+    distress: 0,
+    numIterations:1,
     visibility:.1
 }
 
