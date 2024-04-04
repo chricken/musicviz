@@ -3,17 +3,17 @@
 
 <head>
   <title>Spectrum Visualization</title>
-  <style>
-    canvas {
-      background-color: #000;
-    }
-  </style>
+  <link href="/assets/css/styles.css" rel="stylesheet" />
+
 <script src="/assets/js/index.js" type="module"></script>
 </head>
 
 <body>
-  <button id="playButton">Play</button>
-  <canvas id="cSpectrum" width="800" height="400"></canvas>
+  <canvas id="cSpectrum" width="800" height="200"></canvas>
+  <button id="btnReadAudio">Read Audio</button>
+  <button id="stopAudio">Stop Audio</button>
+  <button id="saveAsJSON">Save as JSON</button>
+  <textarea id="outputArr"></textarea>
 </body>
 
 </html>

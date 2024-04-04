@@ -1,31 +1,62 @@
 'use strict';
 
+import settings, { elements } from './settings.js';
 import render from './render.js';
 
+// Analyser node to get audio data
+let audioElement, analyser;
+
+let audioArr = [];
+
 const audio = {
-    process(buffer, timestamp) {
-        // Calculate the sample index based on the timestamp
-        const sampleRate = buffer.sampleRate;
-        const sampleIndex = Math.floor(sampleRate * timestamp);
+    audioToArr() {
 
-        // Get the audio data for the given timestamp
-        const channelData = buffer.getChannelData(0); // Assuming mono audio
-        const spectrum = channelData.slice(sampleIndex, sampleIndex + 2048); // Adjust the slice length as needed
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+        // Request animation frame for smooth rendering
 
-        // Process the spectrum data
-        // You can access the spectrum values in the 'spectrumData' array
-        render.lines(spectrum);
+        // Get the audio data and draw the spectrum
+        analyser.getByteFrequencyData(dataArray);
+
+        audioArr.push([...dataArray]);
+
+        render.line([...dataArray]);
+
+        // console.log(audioArr);
+        if (!settings.isPaused) {
+            requestAnimationFrame(audio.audioToArr);
+        } else {
+            audioElement.pause();
+        }
     },
+    end() {
+        settings.isPaused = true;
+        let value = JSON.stringify(audioArr);
+        value = value.split('[').join('\n[');
+        elements.output.value = value;
+    },
+    init() {
+        const audioFile = settings.pathAudio;
 
-    load(filename) {
+        // Create an audio element and source node
+        audioElement = new Audio(audioFile);
+        const audioContext = new window.AudioContext();
 
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const audioSource = audioContext.createMediaElementSource(audioElement);
 
-        return fetch(filename)
-            .then(response => response.arrayBuffer())
-            .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
+        analyser = audioContext.createAnalyser();
+        analyser.fftSize = settings.audioResolution; // Adjust the FFT size for resolution
 
+        // Connect the audio source to the analyser
+        audioSource.connect(analyser);
+        audioSource.connect(audioContext.destination);
+
+        audioArr.length = 0;
+
+        audioElement.play();
+        audio.audioToArr()
     }
-}
+};
+
 
 export default audio;

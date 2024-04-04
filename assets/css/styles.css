@@ -1,0 +1,18 @@
+html, body {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+canvas {
+    background-color: #000;
+}
+
+#outputArr {
+    position: relative;
+    display:block;
+    font-size:8px;
+    padding:10px;
+    background-color: #ccc;
+    border: 1px solid #aaa;
+    width: 90%;
+    height: 300px;
+}

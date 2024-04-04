@@ -2,14 +2,10 @@
 
 const settings = {
     elements: {},
-    // Load the MP3 file
     pathAudio: '/music/Black_Shadows.mp3',
-    timestamp:100,
-    everyNthValue: 20,   // Divisor, der aussagt, wie genau das Spektrum sein soll
-    padding:3,
-    distress: 0,
-    numIterations:1,
-    visibility:.1
+    isPaused:false,
+    maxArrayLength:500,
+    audioResolution: 1024,
 }
 
 export default settings;
