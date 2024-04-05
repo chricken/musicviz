@@ -2,12 +2,13 @@
 
 const settings = {
     elements: {},
-    pathAudio: '/music/Black_Shadows.mp3',
+    pathAudio: '/music/deep-strange-whoosh-183845.mp3',
     isPaused: false,
     maxArrayLength: 500,
-    audioResolution: 1024,
+    audioResolution: 128,
     timerAudioToArray: false,
-    songDuration:0,
+    songDuration: 0,
+    startTime: 0,
 }
 
 export default settings;

@@ -11,6 +11,7 @@ let audioArr = [];
 
 const audio = {
     audioToArr() {
+        render.clock();
 
         const bufferLength = analyser.frequencyBinCount;
         const dataArray = new Uint8Array(bufferLength);
@@ -31,6 +32,14 @@ const audio = {
     },
     end() {
         settings.isPaused = true;
+        // Ich kann nicht einfach alle [0,0,0,0,0,0,...] löschen, da mitten im Song auch leere Felder sein könnten
+        while(audioArr[0].every(val => val == 0)){
+            audioArr.shift();
+        }
+        while(audioArr[audioArr.length-1].every(val => val == 0)){
+            audioArr.pop();
+        }
+        console.log(audioArr.length,audioArr.length/30);
         let value = JSON.stringify(audioArr);
         value = value.split('[').join('\n[');
         elements.output.value = value;
@@ -38,11 +47,14 @@ const audio = {
     init() {
         // Create an audio element and source node
         audioElement = new Audio(settings.pathAudio);
+
+        settings.startTime = Date.now();
+
         setTimeout(() => {
             settings.songDuration = audioElement.duration;
             console.log(helpers.secToTime(audioElement.duration));
-        }, 1000)
-        console.log(audioElement);
+        }, 100)
+
         const audioContext = new window.AudioContext();
 
         const audioSource = audioContext.createMediaElementSource(audioElement);

@@ -14,6 +14,7 @@ const domMapping = () => {
     elements.btnReadAudio = document.querySelector('#btnReadAudio');
     elements.stopAudio = document.querySelector('#stopAudio');
     elements.saveAsJSON = document.querySelector('#saveAsJSON');
+    elements.clock = document.querySelector('#clock');
 }
 
 const appendEventListeners = () => {

@@ -14,7 +14,7 @@ const init = () => {
         if (err) console.log(err);
         else {
             console.log('Server läuft');
-            opn('http://localhost');
+            opn('http://localhost/audio_json.html');
         }
     });
 }

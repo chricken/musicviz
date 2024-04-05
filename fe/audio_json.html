@@ -5,14 +5,19 @@
   <title>Spectrum Visualization</title>
   <link href="./assets/css/styles.css" rel="stylesheet" />
 
-<script src="./assets/js/index.js" type="module"></script>
+  <script src="./assets/js/index.js" type="module"></script>
 </head>
 
 <body>
   <canvas id="cSpectrum" width="800" height="200"></canvas>
-  <button id="btnReadAudio">Read Audio</button>
-  <button id="stopAudio">Stop Audio</button>
-  <button id="saveAsJSON">Save as JSON</button>
+  <div id="clock">
+
+  </div>
+  <div>
+    <button id="btnReadAudio">Read Audio</button>
+    <button id="stopAudio">Stop Audio</button>
+    <button id="saveAsJSON">Save as JSON</button>
+  </div>
   <textarea id="outputArr"></textarea>
 </body>
 

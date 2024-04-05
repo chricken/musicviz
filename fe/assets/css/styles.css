@@ -9,10 +9,19 @@ canvas {
 #outputArr {
     position: relative;
     display:block;
-    font-size:8px;
+    font-size:12px;
     padding:10px;
     background-color: #ccc;
     border: 1px solid #aaa;
     width: 90%;
     height: 300px;
+}
+
+#clock {
+    span {
+        /* margin:10px; */
+    }
+    .elapsed::after {
+        content: ' / ';
+    }
 }
