@@ -1,7 +1,13 @@
 'use strict';
-import settings, { elements } from './settings.js'
+import settings, { elements } from './settings.js';
 
 const helpers = {
+    secToTime(sec) {
+        console.log(sec);
+        let min = ~~(sec / 60);
+        sec = sec % 60;
+        return `${min}:${sec.toFixed(1)}`;
+    },
     saveAsJSON() {
         let val = elements.output.value;
 

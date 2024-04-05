@@ -2,6 +2,7 @@
 
 import settings, { elements } from './settings.js';
 import render from './render.js';
+import helpers from './helpers.js';
 
 // Analyser node to get audio data
 let audioElement, analyser;
@@ -23,9 +24,8 @@ const audio = {
         render.line([...dataArray]);
 
         // console.log(audioArr);
-        if (!settings.isPaused) {
-            requestAnimationFrame(audio.audioToArr);
-        } else {
+        if (settings.isPaused) {
+            clearInterval(settings.timerAudioToArray);
             audioElement.pause();
         }
     },
@@ -36,10 +36,13 @@ const audio = {
         elements.output.value = value;
     },
     init() {
-        const audioFile = settings.pathAudio;
-
         // Create an audio element and source node
-        audioElement = new Audio(audioFile);
+        audioElement = new Audio(settings.pathAudio);
+        setTimeout(() => {
+            settings.songDuration = audioElement.duration;
+            console.log(helpers.secToTime(audioElement.duration));
+        }, 1000)
+        console.log(audioElement);
         const audioContext = new window.AudioContext();
 
         const audioSource = audioContext.createMediaElementSource(audioElement);
@@ -54,7 +57,7 @@ const audio = {
         audioArr.length = 0;
 
         audioElement.play();
-        audio.audioToArr()
+        settings.timerAudioToArray = setInterval(audio.audioToArr, 33);
     }
 };
 
