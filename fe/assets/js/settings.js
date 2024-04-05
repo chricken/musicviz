@@ -2,13 +2,15 @@
 
 const settings = {
     elements: {},
-    pathAudio: '/music/deep-strange-whoosh-183845.mp3',
+    pathAudio: '/music/Unfallverhutungsvorschrift.mp3',
+    pathJSON: '/music/unfallverhutungsvorschrift.json',
     isPaused: false,
     maxArrayLength: 500,
-    audioResolution: 128,
+    audioResolution: 1024,
     timerAudioToArray: false,
     songDuration: 0,
     startTime: 0,
+    indexImage:0,
 }
 
 export default settings;

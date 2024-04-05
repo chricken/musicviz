@@ -20,7 +20,6 @@ const render = {
         spanFull.className = 'full';
         elements.clock.append(spanFull);
         spanFull.innerHTML = helpers.secToTime(settings.songDuration);
-
     },
     line(data) {
         let c = elements.c;
@@ -39,7 +38,8 @@ const render = {
             )
         })
         ctx.stroke();
-    }
+    },
+    
 
 }
 
