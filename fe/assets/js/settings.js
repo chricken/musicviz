@@ -6,15 +6,17 @@ const settings = {
     pathJSON: '/music/unfallverhutungsvorschrift.json',
     isPaused: false,
     maxArrayLength: 500,
-    audioResolution: 1024,
+    audioResolution: 128,
     timerAudioToArray: false,
     songDuration: 0,
     startTime: 0,
-    startIndex:4507,
+    startIndex:0,
     indexImage:0,
-    saveImages:false,
+    saveImages:true,
 
     particles:[],
+    density: 4,    // Divisor für die Partikel pro Amplitudenhöhe
+    ausschnitt: 1, // Wieviel vom Spektrum soll gerendert werden?
 }
 
 export default settings;
