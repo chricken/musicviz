@@ -4,6 +4,8 @@ html, body {
 
 canvas {
     background-color: #000;
+    width:600px;
+    height: auto;
 }
 
 #outputArr {

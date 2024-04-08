@@ -18,7 +18,10 @@ const ajax = {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ image: dataURL })
+            body: JSON.stringify({
+                imgNum: settings.indexImage,
+                image: dataURL
+            })
         })
     }
 }

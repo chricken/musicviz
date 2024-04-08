@@ -10,6 +10,7 @@ const settings = {
     timerAudioToArray: false,
     songDuration: 0,
     startTime: 0,
+    startIndex:4507,
     indexImage:0,
 }
 

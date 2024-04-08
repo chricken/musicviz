@@ -49,6 +49,9 @@ const renderViz = {
     },
     init(data) {
         // console.log(data);
+        data = [...data];
+        data.splice(0,settings.startIndex);
+        settings.indexImage = settings.startIndex;
         const iterator = data.values();
 
         const stepNext = () => {
