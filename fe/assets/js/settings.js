@@ -12,6 +12,9 @@ const settings = {
     startTime: 0,
     startIndex:4507,
     indexImage:0,
+    saveImages:false,
+
+    particles:[],
 }
 
 export default settings;

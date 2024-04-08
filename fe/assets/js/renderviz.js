@@ -3,9 +3,43 @@
 import settings, { elements } from "./settings.js";
 import helpers from './helpers.js';
 import ajax from './ajax.js';
+import Particle from "./classes/Particle.js";
 
 const renderViz = {
-    dummy(data) {
+    sprincles(data) {
+        return new Promise(resolve => {
+
+            let c = elements.c;
+            let ctx = c.getContext('2d');
+
+            ctx.clearRect(0, 0, c.width, c.height);
+
+            // console.log(settings.particles.length);
+
+            settings.particles.forEach(particle => {
+                particle.update();
+                particle.render();
+            })
+
+            for (let i = 0; i < 30; i++) {
+                settings.particles.push(new Particle({
+                    speed: Math.random() * .003 + .003,
+                    angle: Math.PI + (Math.random() * .2 - .1),
+                    size: .005
+                }))
+            }
+
+
+            if (settings.saveImages) {
+                ajax.storeImage().then(
+                    () => requestAnimationFrame(resolve)
+                )
+            } else {
+                requestAnimationFrame(resolve)
+            }
+        })
+    },
+    rings(data) {
         return new Promise(resolve => {
 
             let c = elements.c;
@@ -41,24 +75,26 @@ const renderViz = {
             })
             ctx.setTransform(1, 0, 0, 1, 0, 0);
 
-            ajax.storeImage().then(
-                () => requestAnimationFrame(resolve)
-            )
-            
+            if (settings.saveImages) {
+                ajax.storeImage().then(
+                    () => requestAnimationFrame(resolve)
+                )
+            } else {
+                requestAnimationFrame(resolve)
+            }
+
         })
     },
     init(data) {
-        // console.log(data);
         data = [...data];
-        data.splice(0,settings.startIndex);
+        data.splice(0, settings.startIndex);
         settings.indexImage = settings.startIndex;
         const iterator = data.values();
 
         const stepNext = () => {
             let next = iterator.next();
-            // console.log(next);
             if (!next.done) {
-                renderViz.dummy(next.value).then(
+                renderViz.sprincles(next.value).then(
                     stepNext
                 )
             }
