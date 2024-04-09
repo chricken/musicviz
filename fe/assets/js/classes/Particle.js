@@ -23,7 +23,7 @@ class Particle {
         // this.angle += (Math.random() * spread - (spread / 2));
 
         this.size = size;
-        this.startTimestamnp = settings.indexImage;
+        this.startTimestamp = settings.indexImage;
 
         this.deltaX = Math.sin(this.angle) * this.speed;
         this.deltaY = Math.cos(this.angle) * this.speed;
@@ -36,15 +36,13 @@ class Particle {
     update() {
         this.x += this.deltaX;
         this.y += this.deltaY;
-        let timestamp = settings.indexImage - this.startTimestamnp;
-        let progress = timestamp / this.lifetime;
-
+        let timestamp = settings.indexImage - this.startTimestamp;
 
         for (let i = 0; i <= 3; i++) {
             this.color[i] = this.startColor[i] + ((this.targetColor[i] - this.startColor[i]) / this.lifetime * timestamp)
         }
 
-        if (progress >= 1) {
+        if (timestamp > this.lifetime) {
             settings.particles = settings.particles.filter(p => p != this);
         }
 
@@ -54,7 +52,7 @@ class Particle {
         let ctx = c.getContext('2d');
         let clr = this.color;
 
-        ctx.fillStyle = `hsla(${~~clr[0]},${~~clr[1]}%,${~~clr[2]}%,${clr[3]})`;
+        ctx.fillStyle = `rgba(${~~clr[0]},${~~clr[1]},${~~clr[2]},${clr[3]})`;
 
         ctx.fillRect(
             (this.x - (this.size / 2)) * c.width,

@@ -15,12 +15,35 @@ const renderViz = {
             // Partikel zeichnen
             ctx.clearRect(0, 0, c.width, c.height);
 
-            // let imgData = ctx.getImageData(0,0,c.width, c.height);
+
             settings.particles.forEach(particle => {
-                particle.update();
                 particle.render();
+                particle.update();
             })
 
+            /* 
+            let imgData = ctx.getImageData(0, 0, c.width, c.height);
+
+            for (let i = 0; i < settings.particles.length; i++) {
+                let particle = settings.particles[i];
+                // console.log(particle.color);
+                // debugger;
+
+                let x = Math.round(particle.x * elements.c.width);
+                let y = Math.round(particle.y * elements.c.height);
+
+                let index = ((y * imgData.width) + x) * 4;
+                imgData.data[index] = Math.round(particle.color[0]);
+                imgData.data[index + 1] = Math.round(particle.color[1]);
+                imgData.data[index + 2] = Math.round(particle.color[2]);
+                imgData.data[index + 3] = Math.round(particle.color[3] * 255);
+
+                // console.log(particle.color[0], particle.color[1], particle.color[2], particle.color[3]);
+                // debugger
+            }
+
+            ctx.putImageData(imgData, 0, 0);
+             */
 
             // Naue Partikel erzeugen
             data = data.slice(
@@ -31,24 +54,33 @@ const renderViz = {
             // console.log(data.length);
 
             data.forEach((val, index) => {
-                for (let i = 0; i < settings.density; i++) {
-                    if ((Math.random()**.2) * 255 < val) {
-                        settings.particles.push(new Particle({
-                            y: Math.random() * .01 + .99,
-                            x: 1 / data.length * index,
-                            speed: Math.random() * .012 + .017,
-                            angle: Math.PI,
-                            spread: .03,
-                            size: .003,
-                            lifetime: Math.random() * 30 + 10,
-                            // Lieber RGB-Farben?
-                            startColor: [255 - val, 100, 50, 1],
-                            targetColor: [(100 - val) + 360 % 360, 100, 50, 0]
-                        }))
-                        // console.log();
-                    }
+                if ((Math.random() ** .3) * 255 < val) {
+                // for (let j = 0; j < val * settings.density; j++) {
+                settings.particles.push(new Particle({
+                    y: Math.random() * .01 + 1,
+                    x: 1 / data.length * index,
+                    speed: Math.random() * 0 + .01,
+                    angle: Math.PI,
+                    spread: .03,
+                    size: .01,
+                    lifetime: Math.random() * 60 + 60,
+                    // Lieber RGB-Farben?
+                    // startColor: [255 - val, 100, 50, 1],
+                    // targetColor: [(100 - val) + 360 % 360, 100, 50, 0]
+                    startColor: [
+                        val,
+                        255 - (255 / data.length * index),
+                        128,
+                        1
+                    ],
+                    targetColor: [255, 0, 0, 0],
+                }))
                 }
             })
+            // console.log(elements);
+            elements.debug.innerHTML = '';
+            elements.debug.innerHTML += settings.particles.length + ' Partikel<br />';
+            elements.debug.innerHTML += settings.indexImage + ' (Index)<br />';
 
             if (settings.saveImages) {
                 ajax.storeImage().then(

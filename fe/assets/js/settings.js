@@ -12,10 +12,10 @@ const settings = {
     startTime: 0,
     startIndex:0,
     indexImage:0,
-    saveImages:true,
+    saveImages:false,
 
     particles:[],
-    density: 600,    // Divisor für die Partikel pro Amplitudenhöhe
+    density: .2,    // Divisor für die Partikel pro Amplitudenhöhe
     ausschnitt: 1, // Wieviel vom Spektrum soll gerendert werden?
 }
 
