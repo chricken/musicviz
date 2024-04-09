@@ -15,7 +15,7 @@ const settings = {
     saveImages:true,
 
     particles:[],
-    density: 4,    // Divisor für die Partikel pro Amplitudenhöhe
+    density: 600,    // Divisor für die Partikel pro Amplitudenhöhe
     ausschnitt: 1, // Wieviel vom Spektrum soll gerendert werden?
 }
 
