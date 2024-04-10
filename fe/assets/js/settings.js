@@ -10,13 +10,16 @@ const settings = {
     timerAudioToArray: false,
     songDuration: 0,
     startTime: 0,
-    startIndex:4507,
+    // startIndex:4507,
+    startIndex:0,
     indexImage:0,
-    saveImages:true,
+    saveImages:false,
 
     particles:[],
     density: .5,    // Divisor für die Partikel pro Amplitudenhöhe
     ausschnitt: 1, // Wieviel vom Spektrum soll gerendert werden?
+
+    ringWaves:[],
 }
 
 export default settings;
