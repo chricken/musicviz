@@ -52,7 +52,7 @@ class Particle {
         let ctx = c.getContext('2d');
         let clr = this.color;
 
-        ctx.fillStyle = `rgba(${~~clr[0]},${~~clr[1]},${~~clr[2]},${clr[3]})`;
+        ctx.fillStyle = `rgb(${~~clr[0]},${~~clr[1]},${~~clr[2]})`;
 
         ctx.fillRect(
             (this.x - (this.size / 2)) * c.width,

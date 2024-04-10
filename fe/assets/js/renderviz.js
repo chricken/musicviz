@@ -54,27 +54,28 @@ const renderViz = {
             // console.log(data.length);
 
             data.forEach((val, index) => {
-                if ((Math.random() ** .3) * 255 < val) {
-                // for (let j = 0; j < val * settings.density; j++) {
-                settings.particles.push(new Particle({
-                    y: Math.random() * .01 + 1,
-                    x: 1 / data.length * index,
-                    speed: Math.random() * 0 + .01,
-                    angle: Math.PI,
-                    spread: .03,
-                    size: .01,
-                    lifetime: Math.random() * 60 + 60,
-                    // Lieber RGB-Farben?
-                    // startColor: [255 - val, 100, 50, 1],
-                    // targetColor: [(100 - val) + 360 % 360, 100, 50, 0]
-                    startColor: [
-                        val,
-                        255 - (255 / data.length * index),
-                        128,
-                        1
-                    ],
-                    targetColor: [255, 0, 0, 0],
-                }))
+                for (let j = 0; j < val * settings.density; j++) {
+                    if ((Math.random() ** .3) * 255 < val) {
+                        settings.particles.push(new Particle({
+                            y: Math.random() * .01 + 1,
+                            x: 1 / data.length * index,
+                            speed: Math.random() * .003 + .015,
+                            angle: Math.PI,
+                            spread: .02,
+                            size: .002,
+                            lifetime: Math.random() * 20 + 20,
+                            // Lieber RGB-Farben?
+                            // startColor: [255 - val, 100, 50, 1],
+                            // targetColor: [(100 - val) + 360 % 360, 100, 50, 0]
+                            startColor: [
+                                val,
+                                255 - (255 / data.length * index),
+                                128,
+                                1
+                            ],
+                            targetColor: [255, 0, 0, 0],
+                        }))
+                    }
                 }
             })
             // console.log(elements);
@@ -145,7 +146,7 @@ const renderViz = {
         const stepNext = () => {
             let next = iterator.next();
             if (!next.done) {
-                renderViz.sprincles(next.value).then(
+                renderViz.rings(next.value).then(
                     data => {
                         settings.indexImage++;
                         stepNext(data)
