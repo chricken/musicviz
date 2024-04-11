@@ -9,20 +9,20 @@ import WaveRing from './classes/WaveRing.js'
 const renderViz = {
     waveRings(data) {
         return new Promise(resolve => {
-            // console.log(data);
             let c = elements.c;
             let ctx = c.getContext('2d');
 
-            // console.log(settings.ringWaves.length);
-
             // Partikel zeichnen
             ctx.clearRect(0, 0, c.width, c.height);
-
+            console.log(data.length);
             settings.ringWaves.push(
-                new WaveRing(data)
+                new WaveRing({
+                    data,
+                    // addTranslate: [...settings.addTranslate],
+                })
             )
-
-            // console.log(data);
+            // settings.addTranslate[0] += settings.addAddTranslate[0];
+            // settings.addTranslate[1] += settings.addAddTranslate[1];
 
             settings.ringWaves.toReversed().forEach(ring => {
                 ring.update();

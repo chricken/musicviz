@@ -2,24 +2,27 @@
 
 const settings = {
     elements: {},
-    pathAudio: '/music/Unfallverhutungsvorschrift.mp3',
-    pathJSON: '/music/unfallverhutungsvorschrift.json',
+    pathAudio: '/music/Inview.mp3',
+    pathJSON: '/music/Inview.json',
     isPaused: false,
     maxArrayLength: 500,
-    audioResolution: 128,
+    audioResolution: 1024,
     timerAudioToArray: false,
     songDuration: 0,
     startTime: 0,
     // startIndex:4507,
-    startIndex:0,
-    indexImage:0,
-    saveImages:false,
+    startIndex: 0,
+    indexImage: 0,
+    saveImages: true,
 
-    particles:[],
+    particles: [],
     density: .5,    // Divisor für die Partikel pro Amplitudenhöhe
-    ausschnitt: 1, // Wieviel vom Spektrum soll gerendert werden?
+    ausschnitt: .2, // Wieviel vom Spektrum soll gerendert werden?
 
-    ringWaves:[],
+    ringWaves: [],
+    position: [-1, 0],
+    // addTranslate: [-.01, 0],
+    // addAddTranslate: [.0001, 0],
 }
 
 export default settings;
