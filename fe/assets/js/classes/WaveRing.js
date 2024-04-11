@@ -3,9 +3,15 @@
 import settings, { elements } from "../settings.js";
 
 class WaveRing {
-    constructor(data) {
-
+    constructor({
+        data,
+        startColor = [255, 128, 0, 1],
+        targetColor = [255, 0, 0, 0],
+        lifetime = 20,
+    }) {
         this.data = data;
+        this.lifetime = lifetime;
+        this.currentFrame = 0;
 
         this.scale = [1, .7];
         this.addScale = .06;
@@ -14,7 +20,7 @@ class WaveRing {
         this.rotation = 0;
         this.addRotation = -0.01;
         this.blur = 0;
-        this.addBlur =.3;
+        this.addBlur = .3;
         this.alpha = 1;
         this.addAlpha = -.03;
         this.lineWidth = 2;
@@ -24,9 +30,12 @@ class WaveRing {
 
         this.radius = .25;
 
-        this.color = [255, 200, 20];
+        this.startColor = startColor;
+        this.targetColor = targetColor;
+        this.color = startColor;
     }
     update() {
+        this.currentFrame++;
         this.translate[0] += this.addTranslate[0];
         this.translate[1] += this.addTranslate[1];
         this.scale[0] += this.addScale;
