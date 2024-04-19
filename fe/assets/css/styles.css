@@ -2,6 +2,10 @@ html, body {
     font-family: 'Courier New', Courier, monospace;
 }
 
+#preloader {
+    display: none;
+}
+
 canvas {
     background-color: #000;
     width:900px;

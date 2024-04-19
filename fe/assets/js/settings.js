@@ -1,9 +1,11 @@
 'use strict';
 
 const settings = {
-    elements: {},
-    pathAudio: '/music/Inview.mp3',
-    pathJSON: '/music/Inview.json',
+    elements: {
+        vizImg: document.querySelector('#preloader img'),
+    },
+    pathAudio: '/music/Despair.mp3',
+    pathJSON: '/music/despair.json',
     isPaused: false,
     maxArrayLength: 500,
     audioResolution: 1024,
@@ -11,16 +13,19 @@ const settings = {
     songDuration: 0,
     startTime: 0,
     // startIndex:4507,
-    startIndex: 0,
+    startIndex: 2371,
     indexImage: 0,
     saveImages: true,
+    amp:1,
 
     particles: [],
     density: .5,    // Divisor für die Partikel pro Amplitudenhöhe
-    ausschnitt: .2, // Wieviel vom Spektrum soll gerendert werden?
+    ausschnitt: 200, // Wieviel vom Spektrum soll gerendert werden?
 
     ringWaves: [],
     position: [-1, 0],
+
+
     // addTranslate: [-.01, 0],
     // addAddTranslate: [.0001, 0],
 }

@@ -24,4 +24,5 @@ const init = () => {
 }
 
 // INIT
-init();
+window.addEventListener('load', init);
+// init();

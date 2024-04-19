@@ -7,6 +7,57 @@ import Particle from "./classes/Particle.js";
 import WaveRing from './classes/WaveRing.js'
 
 const renderViz = {
+    imgDispersion(data) {
+        return new Promise(resolve => {
+            let c = elements.c;
+            let ctx = c.getContext('2d');
+            let ctx2 = elements.cImg.getContext('2d');
+
+            // Partikel zeichnen
+            ctx.clearRect(0, 0, c.width, c.height);
+
+            data = data.slice(0, settings.ausschnitt);
+            let avg = data.reduce((prev, sum) => prev + sum, 0) / data.length * settings.amp;
+
+            // console.log(avg);
+
+            let imgData1 = ctx.getImageData(0, 0, c.width, c.height);
+            let imgData2 = ctx2.getImageData(0, 0, elements.cImg.width, elements.cImg.height);
+
+            // console.log(imgData1);
+            // console.log(imgData2);
+            for (let i = 0; i < imgData1.data.length; i += 4) {
+                let x = (i / 4) % imgData1.width;
+                let y = Math.floor((i / 4) / imgData1.width);
+
+                // x += helpers.createNumber(-avg / 2, avg / 2);
+                y += helpers.createNumber(-avg / 2, avg / 2);
+                x = Math.min(Math.max(0, x), imgData1.width);
+                y = Math.min(Math.max(0, y), imgData1.height);
+
+                let j = y * imgData1.width + x;
+                j *= 4;
+
+                // console.log(x,y,i);
+
+                imgData1.data[i + 0] = imgData2.data[j + 0] + ~~(avg * settings.amp)
+                imgData1.data[i + 1] = imgData2.data[j + 1] + ~~(avg * settings.amp)
+                imgData1.data[i + 2] = imgData2.data[j + 2] + ~~(avg * settings.amp)
+                imgData1.data[i + 3] = 255;
+                // debugger
+            }
+
+            ctx.putImageData(imgData1, 0, 0);
+
+            if (settings.saveImages) {
+                ajax.storeImage().then(
+                    () => requestAnimationFrame(resolve)
+                )
+            } else {
+                requestAnimationFrame(resolve)
+            }
+        })
+    },
     waveRings(data) {
         return new Promise(resolve => {
             let c = elements.c;
@@ -130,16 +181,48 @@ const renderViz = {
 
         })
     },
+    initVizImage() {
+        // Initialisierung des Bildes, das für die Visualisierung als Vorlage dient
+        elements.cImg = document.createElement('canvas');
+        elements.cImg.width = elements.c.width;
+        elements.cImg.height = elements.c.height;
+        document.body.append(elements.cImg);
+        let ctx = elements.cImg.getContext('2d');
+
+        let w = elements.vizImg.naturalWidth;
+        let h = elements.vizImg.naturalHeight;
+
+        let imgProp = w / h;
+        let cProp = elements.cImg.width / elements.cImg.height;
+
+        if (imgProp > cProp) {
+            ctx.drawImage(elements.vizImg,
+                0, 0,
+                elements.cImg.width * imgProp / cProp,
+                elements.cImg.height
+            );
+        } else {
+            ctx.drawImage(elements.vizImg,
+                0, 0,
+                elements.cImg.width,
+                elements.cImg.height * imgProp / cProp,
+            );
+
+        }
+
+    },
     init(data) {
         data = [...data];
         data.splice(0, settings.startIndex);
         settings.indexImage = settings.startIndex;
         const iterator = data.values();
 
+        renderViz.initVizImage();
+
         const stepNext = () => {
             let next = iterator.next();
             if (!next.done) {
-                renderViz.waveRings(next.value).then(
+                renderViz.imgDispersion(next.value).then(
                     data => {
                         settings.indexImage++;
                         stepNext(data)
