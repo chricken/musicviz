@@ -5,6 +5,8 @@ import opn from 'better-opn';
 import chalk from 'chalk';
 import fs from 'fs';
 
+let path = 'C:\temp px\music visualisations\sappalot\heightmap';
+
 const server = express();
 
 server.use(express.static('fe', {
@@ -23,7 +25,7 @@ server.post('/save-canvas', (req, res) => {
     const binaryData = Buffer.from(base64Data, 'base64');
 
     // Datei speichern
-    fs.writeFile(`./img/image_${leading0(imageData.imgNum)}.png`, binaryData, 'binary', (err) => {
+    fs.writeFile(`${path}/image_${leading0(imageData.imgNum)}.png`, binaryData, 'binary', (err) => {
         if (err) {
             console.error(`Fehler beim Speichern des Bildes ${chalk.red.bold(imageData.imgNum)}: `, err);
             res.sendStatus(500);

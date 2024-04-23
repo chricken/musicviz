@@ -24,8 +24,12 @@ const audio = {
 
         render.line([...dataArray]);
 
+        if(Date().now > (settings.songDuration*1000) + settings.startTime + 1000 ){
+            audio.end();
+        }
+
         // console.log(audioArr);
-        if (settings.isPaused) {
+        if (settings.isPaused ) {
             clearInterval(settings.timerAudioToArray);
             audioElement.pause();
         }

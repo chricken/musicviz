@@ -7,6 +7,37 @@ import Particle from "./classes/Particle.js";
 import WaveRing from './classes/WaveRing.js'
 
 const renderViz = {
+    heightmap(data) {
+        let c = elements.c;
+        let ctx = c.getContext('2d');
+
+        ctx.clearRect(0, 0, c.width, c.height);
+
+        // Ausschnitt
+        data = data.map(dataset =>
+            dataset.slice(0, settings.ausschnitt)
+                .map(val => (val - settings.minLevel))
+                .map(val => Math.max(val, 0))
+        )
+
+        c.width = data[0].length;
+        c.height = data.length;
+
+        data.forEach((dataset, y) => {
+            dataset.forEach((val, x) => {
+                // debugger
+                let i = y * c.width + x;
+                i *= 4;
+                console.log(i);
+            })
+        })
+
+        if (settings.saveImages) {
+            ajax.storeImage().then(
+                () => console.log('Fertig')
+            )
+        }
+    },
     imgDispersion(data) {
         return new Promise(resolve => {
             let c = elements.c;
@@ -16,7 +47,11 @@ const renderViz = {
             // Partikel zeichnen
             ctx.clearRect(0, 0, c.width, c.height);
 
-            data = data.slice(0, settings.ausschnitt);
+            data = data
+                .slice(0, settings.ausschnitt)
+                .map(val => (val - settings.minLevel))
+                .map(val => Math.max(val, 0))
+
             let avg = data.reduce((prev, sum) => prev + sum, 0) / data.length * settings.amp;
 
             // console.log(avg);
@@ -212,12 +247,17 @@ const renderViz = {
 
     },
     init(data) {
+        settings.numDataSets = data.length;
         data = [...data];
         data.splice(0, settings.startIndex);
         settings.indexImage = settings.startIndex;
-        const iterator = data.values();
 
+        renderViz.heightmap(data);
+
+        /* 
         renderViz.initVizImage();
+
+        const iterator = data.values();
 
         const stepNext = () => {
             let next = iterator.next();
@@ -232,6 +272,7 @@ const renderViz = {
         }
 
         stepNext();
+        */
     }
 }
 

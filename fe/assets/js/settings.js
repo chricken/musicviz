@@ -4,8 +4,8 @@ const settings = {
     elements: {
         vizImg: document.querySelector('#preloader img'),
     },
-    pathAudio: '/music/Despair.mp3',
-    pathJSON: '/music/despair.json',
+    pathAudio: '/music/sappalot.mp3',
+    pathJSON: '/music/sappalot.json',
     isPaused: false,
     maxArrayLength: 500,
     audioResolution: 1024,
@@ -13,15 +13,15 @@ const settings = {
     songDuration: 0,
     startTime: 0,
     // startIndex:4507,
-    startIndex: 2371,
+    startIndex: 0,
     indexImage: 0,
-    saveImages: true,
+    saveImages: false,
     amp:1,
 
     particles: [],
     density: .5,    // Divisor für die Partikel pro Amplitudenhöhe
     ausschnitt: 200, // Wieviel vom Spektrum soll gerendert werden?
-
+    minLevel: 50, // Dieser Level wird als null definiert
     ringWaves: [],
     position: [-1, 0],
 
