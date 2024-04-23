@@ -5,7 +5,7 @@ import opn from 'better-opn';
 import chalk from 'chalk';
 import fs from 'fs';
 
-let path = 'C:\temp px\music visualisations\sappalot\heightmap';
+let path = 'C:/temp px/music visualisations/sappalot/heightmap';
 
 const server = express();
 

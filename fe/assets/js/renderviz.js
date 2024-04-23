@@ -23,14 +23,21 @@ const renderViz = {
         c.width = data[0].length;
         c.height = data.length;
 
+        const imgData = ctx.createImageData(c.width, c.height);
+
         data.forEach((dataset, y) => {
             dataset.forEach((val, x) => {
                 // debugger
                 let i = y * c.width + x;
                 i *= 4;
-                console.log(i);
+                imgData.data[i + 0] = val;
+                imgData.data[i + 1] = val;
+                imgData.data[i + 2] = val;
+                imgData.data[i + 3] = 255;
             })
         })
+
+        ctx.putImageData(imgData, 0, 0);
 
         if (settings.saveImages) {
             ajax.storeImage().then(
