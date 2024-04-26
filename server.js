@@ -46,8 +46,8 @@ const init = () => {
         if (err) console.log(err);
         else {
             console.log('Server läuft');
-            // opn('http://localhost/audio_json.html');
-            opn('http://localhost/index.html');
+            opn('http://localhost/audio_json.html');
+            // opn('http://localhost/index.html');
         }
     });
 }

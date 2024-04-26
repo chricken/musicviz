@@ -4,8 +4,8 @@ const settings = {
     elements: {
         vizImg: document.querySelector('#preloader img'),
     },
-    pathAudio: '/music/sappalot.mp3',
-    pathJSON: '/music/sappalot.json',
+    pathAudio: '/music/BlackShadows.mp3',
+    pathJSON: '/music/BlackShadows.json',
     isPaused: false,
     maxArrayLength: 500,
     audioResolution: 1024,
@@ -24,7 +24,6 @@ const settings = {
     minLevel: 50, // Dieser Level wird als null definiert
     ringWaves: [],
     position: [-1, 0],
-
 
     // addTranslate: [-.01, 0],
     // addAddTranslate: [.0001, 0],
