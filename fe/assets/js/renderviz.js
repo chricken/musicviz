@@ -26,11 +26,12 @@ const renderViz = {
             }
             data = myDataset;
 
-            settings.lines.push(new Line(data));
-
-            settings.lines.forEach(line => {
+            settings.lines.unshift(new Line(data));
+            // console.log(settings.lines.length);
+            settings.lines.forEach((line, index) => {
                 line.update();
-                line.render();
+                if (index == 0) line.render(2);
+                else line.render();
             })
 
             if (settings.saveImages) {

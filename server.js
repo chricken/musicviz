@@ -5,7 +5,7 @@ import opn from 'better-opn';
 import chalk from 'chalk';
 import fs from 'fs';
 
-let path = 'C:/Users/alfa/Desktop/temppx';
+let path = 'C:/temp px/music visualisations/sappalot/kurve';
 
 const server = express();
 

@@ -15,10 +15,10 @@ const settings = {
     // startIndex:4507,
     startIndex: 0,
     indexImage: 0,
-    saveImages: false,
+    saveImages: true,
     amp:1,
 
-    fadeMultiplier : .8,
+    fadeMultiplier : .85,
 
     particles: [],
     lines : [],

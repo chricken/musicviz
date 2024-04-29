@@ -5,21 +5,23 @@ import settings, { elements } from '../settings.js';
 class Line {
     constructor(points) {
         this.line = [...points];
-        this.alpha = 1;
+        this.alpha = .99;
     }
     update() {
         this.alpha *= settings.fadeMultiplier;
+        // this.alpha = this.alpha ** (1/settings.fadeMultiplier);
         if (this.alpha <= .01) {
             settings.lines = settings.lines.filter(line => line != this);
         }
     }
-    render() {
+    render(lineWidth = .5) {
 
         let c = elements.c;
         let ctx = c.getContext('2d');
 
         ctx.beginPath();
         ctx.globalAlpha = this.alpha;
+        ctx.lineWidth = lineWidth;
         ctx.moveTo(this.line[0], this.line[1]);
         // console.log(this.line);
         for (let i = 0; i < this.line.length - 6; i++) {
