@@ -4,8 +4,8 @@ const settings = {
     elements: {
         vizImg: document.querySelector('#preloader img'),
     },
-    pathAudio: '/music/BlackShadows.mp3',
-    pathJSON: '/music/BlackShadows.json',
+    pathAudio: '/music/sappalot.mp3',
+    pathJSON: '/music/sappalot.json',
     isPaused: false,
     maxArrayLength: 500,
     audioResolution: 1024,
@@ -18,8 +18,11 @@ const settings = {
     saveImages: true,
     amp:1,
 
+    fadeMultiplier : .9,
+
     particles: [],
-    density: .5,    // Divisor für die Partikel pro Amplitudenhöhe
+    lines : [],
+    density: .15,    // Divisor für die Partikel pro Amplitudenhöhe
     ausschnitt: 500, // Wieviel vom Spektrum soll gerendert werden?
     minLevel: 50, // Dieser Level wird als null definiert
     ringWaves: [],
@@ -27,6 +30,7 @@ const settings = {
 
     // addTranslate: [-.01, 0],
     // addAddTranslate: [.0001, 0],
+
 }
 
 export default settings;

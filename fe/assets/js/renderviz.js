@@ -4,9 +4,44 @@ import settings, { elements } from "./settings.js";
 import helpers from './helpers.js';
 import ajax from './ajax.js';
 import Particle from "./classes/Particle.js";
-import WaveRing from './classes/WaveRing.js'
+import WaveRing from './classes/WaveRing.js';
+// import Line from './classes/Line.js';
+
 
 const renderViz = {
+    kurve(data) {
+        return new Promise(resolve => {
+            // debugger
+            let c = elements.c;
+            let ctx = c.getContext('2d');
+
+            ctx.clearRect(0, 0, c.width, c.height);
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+
+            // Ausschnitt
+            let myDataset = [];
+            for (let i = 0; i < 1; i += settings.density) {
+                myDataset.push(data[~~(data.length * i)] / 255)
+            }
+            data = myDataset;
+
+            settings.lines.push(new Line(data));
+
+            settings.lines.forEach(line => {
+                line.update();
+                line.render();
+            })
+
+            if (settings.saveImages) {
+                ajax.storeImage().then(
+                    () => requestAnimationFrame(resolve)
+                )
+            } else {
+                requestAnimationFrame(resolve)
+            }
+        })
+    },
     heightmap(data) {
         let c = elements.c;
         let ctx = c.getContext('2d');
@@ -59,7 +94,9 @@ const renderViz = {
                 .map(val => (val - settings.minLevel))
                 .map(val => Math.max(val, 0))
 
-            let avg = data.reduce((prev, sum) => prev + sum, 0) / data.length * settings.amp;
+            // let avg = data.reduce((prev, sum) => prev + sum, 0) / data.length * settings.amp;
+            // Verschiebung auf Basis von Channel 4
+            let avg = data[200] * settings.amp;
 
             // console.log(avg);
 
@@ -254,14 +291,15 @@ const renderViz = {
 
     },
     init(data) {
+        // debugger
         settings.numDataSets = data.length;
         data = [...data];
-        data.splice(0, settings.startIndex);
+        // data.splice(0, settings.startIndex);
+        data.slice(0, 100);
         settings.indexImage = settings.startIndex;
 
-        renderViz.heightmap(data);
+        //  renderViz.heightmap(data);
 
-        /* 
         renderViz.initVizImage();
 
         const iterator = data.values();
@@ -279,7 +317,7 @@ const renderViz = {
         }
 
         stepNext();
-        */
+
     }
 }
 

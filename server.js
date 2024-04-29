@@ -5,7 +5,7 @@ import opn from 'better-opn';
 import chalk from 'chalk';
 import fs from 'fs';
 
-let path = 'C:/temp px/music visualisations/sappalot/heightmap';
+let path = 'C:/Users/alfa/Desktop/temppx';
 
 const server = express();
 
@@ -14,7 +14,6 @@ server.use(express.static('fe', {
 }));
 
 server.use(express.json({ limit: '50mb' }));
-
 
 server.post('/save-canvas', (req, res) => {
     const imageData = req.body;
@@ -46,8 +45,8 @@ const init = () => {
         if (err) console.log(err);
         else {
             console.log('Server läuft');
-            opn('http://localhost/audio_json.html');
-            // opn('http://localhost/index.html');
+            // opn('http://localhost/audio_json.html');
+            opn('http://localhost/index.html');
         }
     });
 }
