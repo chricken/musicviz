@@ -20,22 +20,19 @@ class Line {
 
         ctx.beginPath();
         ctx.globalAlpha = this.alpha;
-        ctx.moveTo(-10, c.height / 2);
-        this.line.forEach((dataPoint, index) => {
-            let x = c.width / (this.line.length - 2) * index;
-            let y = c.height - (dataPoint * c.height)
+        ctx.moveTo(this.line[0], this.line[1]);
+        // console.log(this.line);
+        for (let i = 0; i < this.line.length - 6; i++) {
 
             ctx.bezierCurveTo(
-                (index == 0) ? 0 : x - (x - (c.width / (this.line.length - 2) * (index - 1))),
-                (index == 0) ? y : y - (y - (c.height - (this.line[index - 1] * c.height))),
-
-                (index == this.line.length - 1) ? x : c.width / (this.line.length - 2) * (index + 1),
-                (index == this.line.length - 1) ? y : 0,
-
-                x,
-                y,
+                this.line[i + 0] * c.width,
+                this.line[(this.line.length - i) + 1] * c.height,
+                this.line[i + 2] * c.width,
+                this.line[(this.line.length - i) + 3] * c.height,
+                this.line[i + 4] * c.width,
+                this.line[(this.line.length - i) + 5] * c.height,
             )
-        })
+        }
         ctx.stroke();
     }
 }

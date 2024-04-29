@@ -15,14 +15,14 @@ const settings = {
     // startIndex:4507,
     startIndex: 0,
     indexImage: 0,
-    saveImages: true,
+    saveImages: false,
     amp:1,
 
-    fadeMultiplier : .9,
+    fadeMultiplier : .8,
 
     particles: [],
     lines : [],
-    density: .15,    // Divisor für die Partikel pro Amplitudenhöhe
+    density: .02,    // Divisor für die Partikel pro Amplitudenhöhe
     ausschnitt: 500, // Wieviel vom Spektrum soll gerendert werden?
     minLevel: 50, // Dieser Level wird als null definiert
     ringWaves: [],

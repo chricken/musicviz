@@ -5,7 +5,7 @@ import helpers from './helpers.js';
 import ajax from './ajax.js';
 import Particle from "./classes/Particle.js";
 import WaveRing from './classes/WaveRing.js';
-// import Line from './classes/Line.js';
+import Line from './classes/Line.js';
 
 
 const renderViz = {
@@ -300,14 +300,14 @@ const renderViz = {
 
         //  renderViz.heightmap(data);
 
-        renderViz.initVizImage();
+        // renderViz.initVizImage();
 
         const iterator = data.values();
 
         const stepNext = () => {
             let next = iterator.next();
             if (!next.done) {
-                renderViz.imgDispersion(next.value).then(
+                renderViz.kurve(next.value).then(
                     data => {
                         settings.indexImage++;
                         stepNext(data)
