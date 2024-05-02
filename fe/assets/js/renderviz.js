@@ -138,6 +138,72 @@ const renderViz = {
             }
         })
     },
+    imgDispersionX4(data, imgs) {
+        return new Promise(resolve => {
+            let c = elements.c;
+            let ctx = c.getContext('2d');
+
+
+
+            // Partikel zeichnen
+            ctx.clearRect(0, 0, c.width, c.height);
+
+            // Normalisieren
+            data = data
+                .slice(0, settings.ausschnitt)
+                .map(val => (val - settings.minLevel))
+                .map(val => Math.max(val, 0))
+
+            // let avg = data.reduce((prev, sum) => prev + sum, 0) / data.length * settings.amp;
+            // Verschiebung auf Basis von viel Frequenzen
+            imgs.forEach((imgData, index) => {
+                let selectionIndex = [12, 80, 160, 240][index];
+                let avg = data[selectionIndex] * settings.amp;
+
+                // console.log(avg);
+
+                let imgData1 = ctx.getImageData(0, 0, c.width, c.height);
+                let imgData2 = imgData.ctx.getImageData(0, 0, imgData.c.width, imgData.c.height);
+
+                // console.log(imgData1);
+                // console.log(imgData2);
+                for (let i = 0; i < imgData2.data.length; i += 4) {
+                    let x = (i / 4) % imgData2.width;
+                    let y = Math.floor((i / 4) / imgData2.width);
+
+                    // x += helpers.createNumber(-avg / 2, avg / 2);
+                    y += helpers.createNumber(-avg / 2, avg / 2);
+                    x = Math.min(Math.max(0, x), imgData2.width);
+                    y = Math.min(Math.max(0, y), imgData2.height);
+
+                    let j = y * imgData2.width + x;
+                    j *= 4;
+
+                    // console.log(x,y,i);
+
+                    imgData2.data[i + 0] = imgData2.data[j + 0] + ~~(avg * settings.amp)
+                    imgData2.data[i + 1] = imgData2.data[j + 1] + ~~(avg * settings.amp)
+                    imgData2.data[i + 2] = imgData2.data[j + 2] + ~~(avg * settings.amp)
+                    imgData2.data[i + 3] = 255;
+                    // debugger
+                }
+
+                ctx.putImageData(
+                    imgData2,
+                    (index % 2) * (c.width / 2),
+                    ~~(index / 2) * (c.height / 2)
+                );
+
+            })
+            if (settings.saveImages) {
+                ajax.storeImage().then(
+                    () => requestAnimationFrame(resolve)
+                )
+            } else {
+                requestAnimationFrame(resolve)
+            }
+        })
+    },
     waveRings(data) {
         return new Promise(resolve => {
             let c = elements.c;
@@ -261,35 +327,49 @@ const renderViz = {
 
         })
     },
-    initVizImage() {
-        // Initialisierung des Bildes, das für die Visualisierung als Vorlage dient
-        elements.cImg = document.createElement('canvas');
-        elements.cImg.width = elements.c.width;
-        elements.cImg.height = elements.c.height;
-        document.body.append(elements.cImg);
-        let ctx = elements.cImg.getContext('2d');
 
-        let w = elements.vizImg.naturalWidth;
-        let h = elements.vizImg.naturalHeight;
+    // Initialisierung von vier Bildern, die für die Visualisierung collection
+    initVizImageX4(imgPaths = []) {
 
-        let imgProp = w / h;
-        let cProp = elements.cImg.width / elements.cImg.height;
+        return imgPaths.map(path => {
 
-        if (imgProp > cProp) {
-            ctx.drawImage(elements.vizImg,
-                0, 0,
-                elements.cImg.width * imgProp / cProp,
-                elements.cImg.height
-            );
-        } else {
-            ctx.drawImage(elements.vizImg,
-                0, 0,
-                elements.cImg.width,
-                elements.cImg.height * imgProp / cProp,
-            );
+            let img = document.createElement('img');
+            let cImg = document.createElement('canvas');
+            cImg.width = elements.c.width / 2;
+            cImg.height = elements.c.height / 2;
+            let ctx = cImg.getContext('2d');
 
-        }
+            document.body.append(cImg);
 
+            const handleImgLoaded = () => {
+                let w = img.naturalWidth;
+                let h = img.naturalHeight;
+
+                let imgProp = w / h;
+                let cProp = cImg.width / cImg.height;
+
+                if (imgProp > cProp) {
+                    ctx.drawImage(
+                        img,
+                        0, 0,
+                        cImg.width * imgProp / cProp,
+                        cImg.height
+                    );
+                } else {
+                    ctx.drawImage(
+                        img,
+                        0, 0,
+                        cImg.width,
+                        cImg.height * imgProp / cProp,
+                    );
+                }
+            }
+
+            img.addEventListener('load', handleImgLoaded);
+            img.src = path;
+            console.log(cImg, ctx);
+            return { c: cImg, ctx }
+        })
     },
     init(data) {
         // debugger
@@ -302,13 +382,19 @@ const renderViz = {
         //  renderViz.heightmap(data);
 
         // renderViz.initVizImage();
+        let imgs = renderViz.initVizImageX4([
+            '/assets/imgs/img1.png',
+            '/assets/imgs/img2.png',
+            '/assets/imgs/img3.png',
+            '/assets/imgs/img4.png',
+        ])
 
         const iterator = data.values();
 
         const stepNext = () => {
             let next = iterator.next();
             if (!next.done) {
-                renderViz.kurve(next.value).then(
+                renderViz.imgDispersionX4(next.value, imgs).then(
                     data => {
                         settings.indexImage++;
                         stepNext(data)
