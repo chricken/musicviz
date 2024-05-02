@@ -6,9 +6,38 @@ import ajax from './ajax.js';
 import Particle from "./classes/Particle.js";
 import WaveRing from './classes/WaveRing.js';
 import Line from './classes/Line.js';
+import ParticleFlowMap from './classes/ParticleFlowMap.js';
 
 
 const renderViz = {
+    particlesFlowMap(data) {
+        return new Promise(resolve => {
+            // debugger
+            let c = elements.c;
+            let ctx = c.getContext('2d');
+
+            ctx.clearRect(0, 0, c.width, c.height);
+
+            data.forEach(value => {
+                for (let i = 0; i < value * settings.density; i++) {
+                    settings.particles.push(new ParticleFlowMap(value))
+                }
+            })
+
+            settings.particles.reverse().forEach(particle => {
+                particle.update();
+                particle.render();
+            })
+
+            if (settings.saveImages) {
+                ajax.storeImage().then(
+                    () => requestAnimationFrame(resolve)
+                )
+            } else {
+                requestAnimationFrame(resolve)
+            }
+        })
+    },
     kurve(data) {
         return new Promise(resolve => {
             // debugger
@@ -327,7 +356,6 @@ const renderViz = {
 
         })
     },
-
     // Initialisierung von vier Bildern, die für die Visualisierung collection
     initVizImageX4(imgPaths = []) {
 
@@ -382,21 +410,23 @@ const renderViz = {
         //  renderViz.heightmap(data);
 
         // renderViz.initVizImage();
+        /* 
         let imgs = renderViz.initVizImageX4([
             '/assets/imgs/img1.png',
             '/assets/imgs/img2.png',
             '/assets/imgs/img3.png',
             '/assets/imgs/img4.png',
         ])
-
+        */
         const iterator = data.values();
 
         const stepNext = () => {
             let next = iterator.next();
             if (!next.done) {
-                renderViz.imgDispersionX4(next.value, imgs).then(
+                renderViz.particlesFlowMap(next.value).then(
                     data => {
                         settings.indexImage++;
+                        // debugger;
                         stepNext(data)
                     }
                 )
