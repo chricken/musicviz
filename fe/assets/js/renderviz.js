@@ -28,15 +28,17 @@ const renderViz = {
 
             data.forEach(value => {
                 for (let i = 0; i < value * settings.density; i++) {
-                    settings.particles.push(new ParticleFlowMap(value))
+                    settings.particles.unshift(new ParticleFlowMap(value))
                 }
             })
 
-            settings.particles.reverse().forEach(particle => {
+            console.clear();
+
+            settings.particles.forEach(particle => {
                 particle.update();
                 particle.render();
             })
-
+            // debugger
             if (settings.saveImages) {
                 ajax.storeImage().then(
                     () => requestAnimationFrame(resolve)

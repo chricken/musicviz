@@ -46,9 +46,6 @@ class Perlin {
     }
 }
 
-
-
-
 const flowmap = {
     cFlowMap: false,
     visualize() {
@@ -59,7 +56,7 @@ const flowmap = {
         const ctx = c.getContext('2d');
 
         document.body.append(c);
-        console.log(settings.flowmap);
+        // console.log(settings.flowmap);
         // debugger
         c.width = settings.flowmap[0].r.length;
         c.height = settings.flowmap.length;
@@ -82,8 +79,10 @@ const flowmap = {
     update(x = 0, y = 0, z = 0) {
         settings.flowmap.length = 0;
         for (let i = 0; i < elements.c.height; i++) {
+
             let rowR = [];
             let rowB = [];
+            
             for (let j = 0; j < elements.c.width; j++) {
                 rowR.push(flowmap.perlinR.noise(
                     (j + x) / settings.camZoom,
