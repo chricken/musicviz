@@ -30,7 +30,14 @@ const settings = {
 
     // addTranslate: [-.01, 0],
     // addAddTranslate: [.0001, 0],
-
+    flowmap:[],
+    camX:1,
+    camY:2,
+    camZ:3,
+    speedCamX:0,
+    speedCamY:0,
+    speedCamZ:1,
+    camZoom: 200,
 }
 
 export default settings;

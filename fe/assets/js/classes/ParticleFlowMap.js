@@ -5,11 +5,11 @@ import helpers from '../helpers.js';
 
 class ParticleFlowMap {
     constructor(value) {
-        this.x = Math.random();
+        this.x = 1/255*value;//Math.random() ;
         this.y = Math.random();
         this.speedX = helpers.createNumber(-30, 30) / 10000;
         this.speedY = helpers.createNumber(-30, 30) / 10000;
-        this.size = .0003;
+        this.size = .0002;
         this.size *= ((255 - value) / 50) ** 2;
         this.color = `hsl(${Math.min(value * 2, 360)},100%,${helpers.createNumber(20,50)}%)`;
         this.lifetime = 30;

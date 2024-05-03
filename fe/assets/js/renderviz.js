@@ -7,11 +7,19 @@ import Particle from "./classes/Particle.js";
 import WaveRing from './classes/WaveRing.js';
 import Line from './classes/Line.js';
 import ParticleFlowMap from './classes/ParticleFlowMap.js';
+import flowmap from './flowmap.js';
 
 
 const renderViz = {
     particlesFlowMap(data) {
         return new Promise(resolve => {
+
+            // Perlin update
+            settings.camX += settings.speedCamX;
+            settings.camY += settings.speedCamY;
+            settings.camZ += settings.speedCamZ;
+            flowmap.update(settings.camX, settings.camY, settings.camZ);
+
             // debugger
             let c = elements.c;
             let ctx = c.getContext('2d');
@@ -403,6 +411,10 @@ const renderViz = {
         // debugger
         settings.numDataSets = data.length;
         data = [...data];
+
+        // Flowmap vorbereiten
+        flowmap.init();
+
         // data.splice(0, settings.startIndex);
         data.slice(0, 100);
         settings.indexImage = settings.startIndex;
