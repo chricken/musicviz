@@ -100,7 +100,7 @@ const flowmap = {
                 b: rowB,
             });
         }
-        flowmap.visualize();
+        // flowmap.visualize();
         // console.log(settings.flowmap);
     },
     init() {

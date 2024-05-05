@@ -6,18 +6,19 @@ import helpers from '../helpers.js';
 class ParticleFlowMap {
     constructor(value) {
         this.x = 1 / 255 * value;//Math.random() ;
-        this.y = Math.random();
-        this.speed = .002;
+        this.y = (Math.random() ** 5) + .5;
+        this.speed = .004;
         this.speedX = helpers.createNumber(-30, 30) / 10000;
         this.speedY = helpers.createNumber(-30, 30) / 10000;
-        this.size = .0002;
+        this.size = .00005;
         this.size *= ((255 - value) / 50) ** 1.5;
         this.color = `hsl(${Math.min(value * 2, 360)},100%,${helpers.createNumber(20, 50)}%)`;
-        this.lifetime = 30;
+        this.lifetime = 60;
+        this.age = 0;
         this.points = [];
     }
     update() {
-
+        this.age++;
         if (--this.lifetime > 0) {
             let x = ~~(this.x * elements.c.width)
             let y = ~~(this.y * elements.c.height)
@@ -28,8 +29,7 @@ class ParticleFlowMap {
                 let r = settings.flowmap[y].r[x];
                 let b = settings.flowmap[y].b[x];
 
-                console.log(x, y, this.points.length ,'\n',r,b,'\n',this.speed * r * elements.c.width, this.speed * b * elements.c.height);
-
+                // console.log(x, y, this.points.length ,'\n',r,b,'\n',this.speed * r * elements.c.width, this.speed * b * elements.c.height);
 
                 this.x += this.speed * r;
                 this.y += this.speed * b;
@@ -51,7 +51,7 @@ class ParticleFlowMap {
         let ctx = c.getContext('2d');
 
         // console.log(this);
-
+        ctx.globalAlpha = (1 - (this.age / this.lifetime ))** 3;
         ctx.fillStyle = this.color;
         ctx.strokeStyle = this.color;
         ctx.lineCap = 'round';

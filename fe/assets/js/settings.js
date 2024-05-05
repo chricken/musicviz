@@ -22,7 +22,7 @@ const settings = {
 
     particles: [],
     lines : [],
-    density: .0002,    // Divisor für die Partikel pro Amplitudenhöhe
+    density: .03,    // Divisor für die Partikel pro Amplitudenhöhe
     ausschnitt: 500, // Wieviel vom Spektrum soll gerendert werden?
     minLevel: 0, // Dieser Level wird als null definiert
     ringWaves: [],
