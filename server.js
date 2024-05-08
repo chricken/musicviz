@@ -5,7 +5,7 @@ import opn from 'better-opn';
 import chalk from 'chalk';
 import fs from 'fs';
 
-let path = 'C:/temp px/music visualisations/inview/linien';
+let path = 'C:/temp px/music visualisations/dtci2';
 
 const server = express();
 
@@ -45,8 +45,8 @@ const init = () => {
         if (err) console.log(err);
         else {
             console.log('Server läuft');
-            // opn('http://localhost/audio_json.html');
-            opn('http://localhost/index.html');
+            opn('http://localhost/audio_json.html');
+            // opn('http://localhost/index.html');
         }
     });
 }

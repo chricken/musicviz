@@ -4,8 +4,8 @@ const settings = {
     elements: {
         vizImg: document.querySelector('#preloader img'),
     },
-    pathAudio: '/music/inview.mp3',
-    pathJSON: '/music/inview.json',
+    pathAudio: '/music/DTCI 2.mp3',
+    pathJSON: '/music/DTCI 2.json',
     isPaused: false,
     maxArrayLength: 500,
     audioResolution: 1024,
@@ -16,13 +16,13 @@ const settings = {
     startIndex: 0,
     indexImage: 0,
     saveImages: true,
-    amp:1,
+    amp:30,
 
     fadeMultiplier : .85,
 
     particles: [],
     lines : [],
-    density: .03,    // Divisor für die Partikel pro Amplitudenhöhe
+    density: .005,    // Divisor für die Partikel pro Amplitudenhöhe
     ausschnitt: 500, // Wieviel vom Spektrum soll gerendert werden?
     minLevel: 0, // Dieser Level wird als null definiert
     ringWaves: [],

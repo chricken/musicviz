@@ -7,12 +7,42 @@ import Particle from "./classes/Particle.js";
 import WaveRing from './classes/WaveRing.js';
 import Line from './classes/Line.js';
 import ParticleFlowMap from './classes/ParticleFlowMap.js';
+import Perlenkette from './classes/Perlenkette.js';
 import flowmap from './flowmap.js';
 
 
 const renderViz = {
+    perlenkette(){
+        return new Promise(resolve => {
+            let c = elements.c;
+            let ctx = c.getContext('2d');
+
+            ctx.clearRect(0, 0, c.width, c.height);
+
+            data.forEach((value, index) => {
+               settings.perlenketten.push(new Perlenkette(value, index));
+            })
+
+            settings.perlenketten.forEach(perlenkette => {
+                perlenkette.update();
+                perlenkette.render();
+            })
+
+
+            if (settings.saveImages) {
+                ajax.storeImage().then(
+                    () => requestAnimationFrame(resolve)
+                )
+            } else {
+                requestAnimationFrame(resolve)
+            }
+        })
+    },
     particlesFlowMap(data) {
         return new Promise(resolve => {
+
+            // console.clear();
+            // console.log(settings.particles.length, settings.indexImage - settings.startIndex);
 
             // Perlin update
             settings.camX += settings.speedCamX;
@@ -20,25 +50,23 @@ const renderViz = {
             settings.camZ += settings.speedCamZ;
             flowmap.update(settings.camX, settings.camY, settings.camZ);
 
-            // debugger
             let c = elements.c;
             let ctx = c.getContext('2d');
 
             ctx.clearRect(0, 0, c.width, c.height);
 
-            data.forEach(value => {
-                for (let i = 0; i < value * settings.density; i++) {
-                    settings.particles.unshift(new ParticleFlowMap(value))
+            data.forEach((value, index) => {
+                let multiplier = (((data.length - index) / data.length) ** 40) * settings.amp + 1;
+                for (let i = 0; i < value * settings.density * multiplier; i++) {
+                    settings.particles.unshift(new ParticleFlowMap(value, index))
                 }
             })
-
-            console.clear();
 
             settings.particles.forEach(particle => {
                 particle.update();
                 particle.render();
             })
-            // debugger
+
             if (settings.saveImages) {
                 ajax.storeImage().then(
                     () => requestAnimationFrame(resolve)
@@ -421,26 +449,14 @@ const renderViz = {
         data.slice(0, 100);
         settings.indexImage = settings.startIndex;
 
-        //  renderViz.heightmap(data);
-
-        // renderViz.initVizImage();
-        /* 
-        let imgs = renderViz.initVizImageX4([
-            '/assets/imgs/img1.png',
-            '/assets/imgs/img2.png',
-            '/assets/imgs/img3.png',
-            '/assets/imgs/img4.png',
-        ])
-        */
         const iterator = data.values();
 
         const stepNext = () => {
             let next = iterator.next();
             if (!next.done) {
-                renderViz.particlesFlowMap(next.value).then(
+                renderViz.perlenkette(next.value).then(
                     data => {
                         settings.indexImage++;
-                        // debugger;
                         stepNext(data)
                     }
                 )
