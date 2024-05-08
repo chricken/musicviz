@@ -5,7 +5,7 @@ const settings = {
         vizImg: document.querySelector('#preloader img'),
     },
     pathAudio: '/music/DTCI 2.mp3',
-    pathJSON: '/music/DTCI 2.json',
+    pathJSON: '/music/dtci2.json',
     isPaused: false,
     maxArrayLength: 500,
     audioResolution: 1024,
@@ -15,7 +15,7 @@ const settings = {
     // startIndex:4507,
     startIndex: 0,
     indexImage: 0,
-    saveImages: true,
+    saveImages: false,
     amp:30,
 
     fadeMultiplier : .85,
