@@ -14,13 +14,13 @@ import flowmap from './flowmap.js';
 const renderViz = {
     perlenkette(data) {
         return new Promise(resolve => {
-            
+
             // Perlin update
             settings.camX += settings.speedCamX;
             settings.camY += settings.speedCamY;
             settings.camZ += settings.speedCamZ;
             flowmap.update(settings.camX, settings.camY, settings.camZ);
-            
+
             // console.log(data);
             let c = elements.c;
             let ctx = c.getContext('2d');
@@ -28,15 +28,15 @@ const renderViz = {
             ctx.clearRect(0, 0, c.width, c.height);
 
             data.forEach((value, index) => {
-                if (index % 3 == 0)
-                    settings.particles.unshift(new Perlenkette({ value, index, data }));
+                if (index % 12 == 0)
+                    settings.particles.unshift(new Perlenkette({ data, index }));
             })
 
             settings.particles.forEach(perlenkette => {
-                perlenkette.update();
                 perlenkette.render();
+                perlenkette.update();
             })
-
+            // debugger
             if (settings.saveImages) {
                 ajax.storeImage().then(
                     () => requestAnimationFrame(resolve)

@@ -4,11 +4,11 @@ import settings, { elements } from "../settings.js";
 
 class Perlenkette {
     constructor({
-        value,
+        data,
         index,
-        data
     }) {
-        data = data.filter((val, i) => i % 3 == 0)
+        let value = data[index];
+        // data = data.filter((val, i) => i % 1 == 0)
         this.startColor = [value, 255 - value, 60, 1];
         this.targetColor = [0, 100, 30, 0];
 
@@ -16,8 +16,10 @@ class Perlenkette {
         this.speed = .005;
 
         this.color = [...this.startColor];
-        this.lifetime = 20;
+        this.lifetime = 15;
         this.size = .01;
+
+        // console.log(value, index, data);
 
         this.kette = [...new Array(value)].map((val, i) => {
             return {
@@ -25,10 +27,13 @@ class Perlenkette {
                 y: 1 / 255 * i
             }
         });
+        // console.log(this.kette);
     }
     update() {
         let c = elements.c;
         this.age++;
+
+        // console.log(this.kette);
 
         this.kette.forEach(point => {
             let x = ~~(point.x * c.width);
@@ -40,11 +45,14 @@ class Perlenkette {
             ) {
                 let r = settings.flowmap[y].r[x];
                 let b = settings.flowmap[y].b[x];
-                // console.log(r, b);
+                // console.log(r, b, this.speed);
                 point.x += r * this.speed * 2
-                point.y -= (b + 3) * this.speed * 3
+                point.y += (b + 3) * this.speed * 3
             }
         })
+
+        // console.log(this.kette);
+        // debugger
         if (this.age >= this.lifetime)
             settings.particles = settings.particles.filter(val => val != this);
 
@@ -57,7 +65,7 @@ class Perlenkette {
         if (this.age < 2)
             ctx.globalAlpha = 1;
         else
-            ctx.globalAlpha = 1 - ((this.age / this.lifetime) ** .02);
+            ctx.globalAlpha = 1 - ((this.age / this.lifetime) ** 2);
 
         ctx.strokeStyle = `rgb(${~~clr[0]},${~~clr[1]},${~~clr[2]})`;
         ctx.fillStyle = `rgb(${~~clr[0]},${~~clr[1]},${~~clr[2]})`;
@@ -72,33 +80,38 @@ class Perlenkette {
 
             this.kette.forEach(point => {
                 ctx.moveTo(
-                    this.kette[0].x * c.width,
-                    this.kette[0].y * c.height / 2
+                    point.x * c.width,
+                    point.y * c.height / 2
                 );
+                /*
                 ctx.lineTo(
                     point.x * c.width,
                     point.y * c.height / 2 + 2
                 );
+                */
+                ctx.arc(
+                    point.x * c.width,
+                    point.y * c.height / 2,
+                    2,
+                    0,
+                    2 * Math.PI
+                )
             })
-            ctx.stroke();
+            ctx.fill();
 
             ctx.beginPath()
+            ctx.moveTo(
+                this.kette[0].x * c.width,
+                this.kette[0].y * c.height,
+            )
             ctx.arc(
                 this.kette[0].x * c.width,
                 this.kette[0].y * c.height,
-                this.size * c.width,
+                4,
                 0,
                 Math.PI * 2
             )
             ctx.fill();
-            console.log(
-                this.kette[0].x * c.width,
-                this.kette[0].y * c.height,
-                this.size * c.width,
-                0,
-                Math.PI * 2
-            );
-            debugger
         }
     }
 }
