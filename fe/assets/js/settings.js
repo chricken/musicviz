@@ -15,7 +15,7 @@ const settings = {
     // startIndex:4507,
     startIndex: 0,
     indexImage: 0,
-    saveImages: false,
+    saveImages: true,
     amp:30,
 
     fadeMultiplier : .85,

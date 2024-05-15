@@ -16,7 +16,7 @@ class Perlenkette {
         this.speed = .005;
 
         this.color = [...this.startColor];
-        this.lifetime = 15;
+        this.lifetime = 40;
         this.size = .01;
 
         // console.log(value, index, data);
@@ -46,8 +46,8 @@ class Perlenkette {
                 let r = settings.flowmap[y].r[x];
                 let b = settings.flowmap[y].b[x];
                 // console.log(r, b, this.speed);
-                point.x += r * this.speed * 2
-                point.y += (b + 3) * this.speed * 3
+                point.x += r * this.speed * 1.5
+                point.y += (b + 3) * this.speed;
             }
         })
 
@@ -62,33 +62,28 @@ class Perlenkette {
         let ctx = c.getContext('2d');
         let clr = this.color;
 
-        if (this.age < 2)
-            ctx.globalAlpha = 1;
-        else
-            ctx.globalAlpha = 1 - ((this.age / this.lifetime) ** 2);
-
         ctx.strokeStyle = `rgb(${~~clr[0]},${~~clr[1]},${~~clr[2]})`;
         ctx.fillStyle = `rgb(${~~clr[0]},${~~clr[1]},${~~clr[2]})`;
 
         if (this.kette.length) {
 
-            if (this.age < 2) ctx.lineWidth = 5;
-            else if (this.age < this.lifetime / 2) ctx.lineWidth = 1;
-            else ctx.lineWidth = .5;
+            ctx.lineWidth = (this.age == 0) ? 3 : 1;
+            ctx.globalAlpha = (this.age == 0) ? 1 : (1 - (this.age / this.lifetime)) * .3;
 
             ctx.beginPath();
 
             this.kette.forEach(point => {
+                /*
                 ctx.moveTo(
                     point.x * c.width,
                     point.y * c.height / 2
                 );
-                /*
+                */
                 ctx.lineTo(
                     point.x * c.width,
-                    point.y * c.height / 2 + 2
+                    point.y * c.height * .7 + 2
                 );
-                */
+                /*
                 ctx.arc(
                     point.x * c.width,
                     point.y * c.height / 2,
@@ -96,21 +91,25 @@ class Perlenkette {
                     0,
                     2 * Math.PI
                 )
+                */
             })
-            ctx.fill();
+            // ctx.fill();
+            ctx.stroke();
 
+            let ln = this.kette.length - 1;
             ctx.beginPath()
             ctx.moveTo(
-                this.kette[0].x * c.width,
-                this.kette[0].y * c.height,
+                this.kette[ln].x * c.width,
+                this.kette[ln].y * c.height * .7,
             )
             ctx.arc(
-                this.kette[0].x * c.width,
-                this.kette[0].y * c.height,
-                4,
+                this.kette[ln].x * c.width,
+                this.kette[ln].y * c.height * .7,
+                this.age == 0 ? 3 : 1,
                 0,
                 Math.PI * 2
             )
+            ctx.fillStyle = '#fff';
             ctx.fill();
         }
     }

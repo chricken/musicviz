@@ -28,7 +28,7 @@ const renderViz = {
             ctx.clearRect(0, 0, c.width, c.height);
 
             data.forEach((value, index) => {
-                if (index % 12 == 0)
+                if (index % 2 == 0)
                     settings.particles.unshift(new Perlenkette({ data, index }));
             })
 
