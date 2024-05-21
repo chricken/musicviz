@@ -4,24 +4,24 @@ const settings = {
     elements: {
         vizImg: document.querySelector('#preloader img'),
     },
-    pathAudio: '/music/DTCI 2.mp3',
-    pathJSON: '/music/dtci2.json',
+    pathAudio: '/music/Zalagor 1 edit.mp3',
+    pathJSON: '/music/zalagor.json',
     isPaused: false,
     maxArrayLength: 500,
     audioResolution: 1024,
     timerAudioToArray: false,
     songDuration: 0,
     startTime: 0,
-    // startIndex:4507,
     startIndex: 0,
     indexImage: 0,
     saveImages: true,
-    amp:30,
+    amp: 30,
 
-    fadeMultiplier : .85,
+    fadeMultiplier: .85,
 
     particles: [],
-    lines : [],
+    lines: [],
+    imgs: [],
     density: .005,    // Divisor für die Partikel pro Amplitudenhöhe
     ausschnitt: 500, // Wieviel vom Spektrum soll gerendert werden?
     minLevel: 0, // Dieser Level wird als null definiert
@@ -30,13 +30,13 @@ const settings = {
 
     // addTranslate: [-.01, 0],
     // addAddTranslate: [.0001, 0],
-    flowmap:[],
-    camX:1,
-    camY:2,
-    camZ:3,
-    speedCamX:0,
-    speedCamY:0,
-    speedCamZ:5,
+    flowmap: [],
+    camX: 1,
+    camY: 2,
+    camZ: 3,
+    speedCamX: 0,
+    speedCamY: 0,
+    speedCamZ: 5,
     camZoom: 200,
 }
 

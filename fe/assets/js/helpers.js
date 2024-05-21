@@ -11,7 +11,9 @@ const helpers = {
         sec = sec % 60;
         return `${min}:${sec.toFixed(1)}`;
     },
-    
+    leading0(num = 0, digits = 2) {
+        return ('0000000000000000' + num).substr(-digits);
+    },
     saveAsJSON() {
         let val = elements.output.value;
 

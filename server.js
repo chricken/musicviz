@@ -5,7 +5,8 @@ import opn from 'better-opn';
 import chalk from 'chalk';
 import fs from 'fs';
 
-let path = 'C:/temp px/music visualisations/dtci2';
+// let path = 'C:/temp px/music visualisations/zalagor';
+let path = 'C:/Users/alfa/Desktop/temp px/zalagor';
 
 const server = express();
 

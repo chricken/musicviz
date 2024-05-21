@@ -12,6 +12,57 @@ import flowmap from './flowmap.js';
 
 
 const renderViz = {
+    showImgs(data) {
+        // Entkoppeln
+        data = [...data];
+        data = data.map(val => {
+            val -= 50;
+            val = Math.max(val, 0);
+            val = ((val / 255)**.5) * 255;
+            val = Math.round(val);
+            return val;
+        })
+
+        let c = elements.c;
+        let ctx = c.getContext('2d');
+
+        ctx.clearRect(0, 0, c.width, c.height);
+
+        return new Promise(resolve => {
+            // Hauptbild zeichnen
+            ctx.globalAlpha = 1;
+
+            ctx.drawImage(settings.imgs[0], 0, 0);
+
+            for (let i = 1; i < settings.imgs.length; i++) {
+                let img = settings.imgs[i];
+
+                // Die ersten paar Datenelemente ausschneiden
+                let spliced = data.splice(
+                    0,
+                    ~~(data.length / (settings.imgs.length - 1))
+                )
+
+                // Daraus den Durchschnitt bilden
+                let avg = spliced.reduce((sum, value) => sum + value, 0) / spliced.length;
+                ctx.globalAlpha = (avg / 255) ** .5;
+
+                ctx.drawImage(
+                    settings.imgs[i],
+                    0, 0
+                )
+
+            }
+
+            if (settings.saveImages) {
+                ajax.storeImage().then(
+                    () => requestAnimationFrame(resolve)
+                )
+            } else {
+                requestAnimationFrame(resolve)
+            }
+        })
+    },
     perlenkette(data) {
         return new Promise(resolve => {
 
@@ -445,6 +496,29 @@ const renderViz = {
             return { c: cImg, ctx }
         })
     },
+    initVizImg() {
+
+        let imgs = [
+            'img5.png',
+            'img6.png',
+            'img7.png',
+            'img8.png',
+            'img9.png',
+            'img10.png',
+        ]
+
+        return Promise.all(
+            imgs.map(filename => {
+                return new Promise((resolve, reject) => {
+                    const elImg = document.createElement('img');
+                    elImg.addEventListener('load', resolve);
+                    settings.imgs.push(elImg);
+                    elImg.src = `/assets/imgs/${filename}`;
+                    console.log(elImg);
+                })
+            })
+        )
+    },
     init(data) {
         // debugger
         settings.numDataSets = data.length;
@@ -462,16 +536,18 @@ const renderViz = {
         const stepNext = () => {
             let next = iterator.next();
             if (!next.done) {
-                renderViz.perlenkette(next.value).then(
+                renderViz.showImgs(next.value).then(
                     data => {
                         settings.indexImage++;
-                        stepNext(data)
+                        stepNext(data);
                     }
                 )
             }
         }
 
-        stepNext();
+        renderViz.initVizImg().then(
+            stepNext
+        );
 
     }
 }
