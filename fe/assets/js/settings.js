@@ -4,8 +4,8 @@ const settings = {
     elements: {
         vizImg: document.querySelector('#preloader img'),
     },
-    pathAudio: '/music/Zalagor 1 edit.mp3',
-    pathJSON: '/music/zalagor.json',
+    pathAudio: '/music/Ebony.mp3',
+    pathJSON: '/music/ebony.json',
     isPaused: false,
     maxArrayLength: 500,
     audioResolution: 1024,
@@ -14,7 +14,7 @@ const settings = {
     startTime: 0,
     startIndex: 0,
     indexImage: 0,
-    saveImages: true,
+    saveImages: false,
     amp: 30,
 
     fadeMultiplier: .85,

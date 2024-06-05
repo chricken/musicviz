@@ -8,17 +8,51 @@ import WaveRing from './classes/WaveRing.js';
 import Line from './classes/Line.js';
 import ParticleFlowMap from './classes/ParticleFlowMap.js';
 import Perlenkette from './classes/Perlenkette.js';
+import RandomDot from './classes/RandomDot.js';
 import flowmap from './flowmap.js';
 
 
 const renderViz = {
+    randomDots(data) {
+        data = [...data];
+        data = data.slice(0, data.length - 30);
+
+        let c = elements.c;
+        let ctx = c.getContext('2d');
+
+        ctx.clearRect(0, 0, c.width, c.height);
+
+        return new Promise(resolve => {
+            // Hauptbild zeichnen
+            ctx.globalAlpha = .5;
+
+            data.forEach((val, index) => {
+                for (let i = 0; i < val/5; i++) {
+                    settings.particles.unshift(new RandomDot(val, index, data.length));
+                }
+                ctx.fillStyle = '#fff';
+            })
+            settings.particles.forEach(part => {
+                part.update();
+                part.render();
+            })
+            
+            if (settings.saveImages) {
+                ajax.storeImage().then(
+                    () => requestAnimationFrame(resolve)
+                )
+            } else {
+                requestAnimationFrame(resolve)
+            }
+        })
+    },
     showImgs(data) {
         // Entkoppeln
         data = [...data];
         data = data.map(val => {
             val -= 50;
             val = Math.max(val, 0);
-            val = ((val / 255)**.5) * 255;
+            val = ((val / 255) ** .5) * 255;
             val = Math.round(val);
             return val;
         })
@@ -82,11 +116,12 @@ const renderViz = {
                 if (index % 2 == 0)
                     settings.particles.unshift(new Perlenkette({ data, index }));
             })
-
+            debugger
             settings.particles.forEach(perlenkette => {
                 perlenkette.render();
                 perlenkette.update();
             })
+
             // debugger
             if (settings.saveImages) {
                 ajax.storeImage().then(
@@ -525,7 +560,7 @@ const renderViz = {
         data = [...data];
 
         // Flowmap vorbereiten
-        flowmap.init();
+        // flowmap.init();
 
         // data.splice(0, settings.startIndex);
         data.slice(0, 100);
@@ -536,7 +571,7 @@ const renderViz = {
         const stepNext = () => {
             let next = iterator.next();
             if (!next.done) {
-                renderViz.showImgs(next.value).then(
+                renderViz.randomDots(next.value).then(
                     data => {
                         settings.indexImage++;
                         stepNext(data);
@@ -545,9 +580,9 @@ const renderViz = {
             }
         }
 
-        renderViz.initVizImg().then(
-            stepNext
-        );
+        // renderViz.initVizImg().then(
+        stepNext()
+        // );
 
     }
 }
