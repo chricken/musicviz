@@ -13,6 +13,59 @@ import flowmap from './flowmap.js';
 
 
 const renderViz = {
+    spirale(data) {
+        // debugger
+        data = [...data];
+        data = data.reverse();
+        // data = data.slice(0, data.length - 30);
+
+        let c = elements.c;
+        let ctx = c.getContext('2d');
+
+        ctx.clearRect(0, 0, c.width, c.height);
+
+        console.log(settings.indexImage, data);
+
+        return new Promise(resolve => {
+            // Hauptbild zeichnen
+            ctx.globalAlpha = 1;
+
+            ctx.translate(c.width / 2, c.height / 2);
+
+            let vol = data.reduce((sum, val) => sum + val, 0);
+            vol /= data.length;
+            vol /= 255;
+
+            data.forEach((val, index) => {
+                ctx.fillStyle = `hsla(${64 - val / 4}, 100%,${val / 255 * 50}%, ${val / 128 + .5})`;
+                // console.log(val);
+                ctx.save();
+
+                // Die 100 ist der Multiplikator
+                let abstand = index / data.length * 600;
+
+                // let angle = (Math.PI * 2) / data.length * index * 8 * (.75 + vol / 4);
+                let angle = (Math.PI * 2) / data.length * index * 6;// * (.75 + vol / 4);
+                ctx.rotate(angle);
+                ctx.translate(abstand, 0);
+
+                val = ((val / 255) ** 3) * 255;
+                ctx.fillRect(0, 0, (-val /.7) , val / 255 * 50);
+
+                ctx.restore();
+            })
+
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+            if (settings.saveImages) {
+                ajax.storeImage().then(
+                    () => requestAnimationFrame(resolve)
+                )
+            } else {
+                requestAnimationFrame(resolve)
+            }
+        })
+    },
     randomDots(data) {
         data = [...data];
         data = data.slice(0, data.length - 30);
@@ -27,7 +80,7 @@ const renderViz = {
             ctx.globalAlpha = .5;
 
             data.forEach((val, index) => {
-                for (let i = 0; i < val/5; i++) {
+                for (let i = 0; i < val / 5; i++) {
                     settings.particles.unshift(new RandomDot(val, index, data.length));
                 }
                 ctx.fillStyle = '#fff';
@@ -36,7 +89,7 @@ const renderViz = {
                 part.update();
                 part.render();
             })
-            
+
             if (settings.saveImages) {
                 ajax.storeImage().then(
                     () => requestAnimationFrame(resolve)
@@ -555,7 +608,7 @@ const renderViz = {
         )
     },
     init(data) {
-        // debugger
+        // debugger;
         settings.numDataSets = data.length;
         data = [...data];
 
@@ -563,7 +616,7 @@ const renderViz = {
         // flowmap.init();
 
         // data.splice(0, settings.startIndex);
-        data.slice(0, 100);
+        // data.slice(0, 100);
         settings.indexImage = settings.startIndex;
 
         const iterator = data.values();
@@ -571,17 +624,17 @@ const renderViz = {
         const stepNext = () => {
             let next = iterator.next();
             if (!next.done) {
-                renderViz.randomDots(next.value).then(
-                    data => {
+                renderViz.spirale(next.value).then(
+                    () => {
                         settings.indexImage++;
-                        stepNext(data);
+                        stepNext();
                     }
                 )
             }
         }
 
         // renderViz.initVizImg().then(
-        stepNext()
+        stepNext();
         // );
 
     }

@@ -8,13 +8,13 @@ import renderViz from './renderviz.js';
 // FUNKTIONEN
 const domMapping = () => {
     elements.c = document.querySelector('#cDraw');
-
     elements.debug = document.querySelector('#debug');
 }
 
 const appendEventlisteners = () => { }
 
 const init = () => {
+    debugger;
     domMapping();
     appendEventlisteners();
     ajax.loadJSON(settings.pathJSON).then(

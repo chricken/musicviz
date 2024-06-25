@@ -4,8 +4,8 @@ const settings = {
     elements: {
         vizImg: document.querySelector('#preloader img'),
     },
-    pathAudio: '/music/Ebony.mp3',
-    pathJSON: '/music/ebony.json',
+    pathAudio: '/music/insufficient.mp3',
+    pathJSON: '/music/insufficient.json',
     isPaused: false,
     maxArrayLength: 500,
     audioResolution: 1024,
